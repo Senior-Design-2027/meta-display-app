@@ -8,6 +8,9 @@ import SwiftUI
         do {
             try Wearables.configure() // The first thing we want to do is configure the Wearables SDK so we can use it
             print("Successfully configured SDK")
+            
+            startRegistration()
+            
         } catch {
             print("Failed to configure SDK: \(error)")
         }
@@ -25,4 +28,19 @@ import SwiftUI
         }
     }
 }
-//
+
+//APP REGISTRATION: This section of code registers your app with the Meta AI app. --------------------------------------------------------------
+func startRegistration() {
+    Task { //Code from Claude
+        do {
+            //Opens Meta AI app and has user register the glasses
+            //OUTPUT must be fed to handleUrl -> done by func handleWearablesCallback(url)
+            try await Wearables.shared.startRegistration()
+        } catch {
+            let ns = error as NSError
+                print("describing: \(String(describing: error))")
+                print("localized: \(error.localizedDescription)")
+                print("domain: \(ns.domain), code: \(ns.code), userInfo: \(ns.userInfo)")
+        }
+    }
+}

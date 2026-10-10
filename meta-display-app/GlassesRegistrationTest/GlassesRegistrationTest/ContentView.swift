@@ -18,8 +18,8 @@ struct ContentView: View {
         Text("Hello, world!")
             .padding()
         
-        Button("Register") { startRegistration() }
-            .padding()
+        //Button("Register glasses") { startRegistration() }
+        //    .padding()
         
         Button("Get Camera Permission") {requestCameraPermission()}
             .padding()
@@ -30,16 +30,18 @@ struct ContentView: View {
 
     //APP REGISTRATION: This section of code registers your app with the Meta AI app. --------------------------------------------------------------
     func startRegistration() {
-        Task {
-            do{
-                try await wearables.startRegistration()
-              //Opens Meta AI app and has user register the glasses
-              //OUTPUT must be fed to handleUrl -> done by func handleWearablesCallback(url)
+        Task { //Code from Claude
+            do {
+                //Opens Meta AI app and has user register the glasses
+                //OUTPUT must be fed to handleUrl -> done by func handleWearablesCallback(url)
+                try await Wearables.shared.startRegistration()
             } catch {
-                errorMessage = "Registration failed: \(error.localizedDescription)"
+                let ns = error as NSError
+                    print("describing: \(String(describing: error))")
+                    print("localized: \(error.localizedDescription)")
+                    print("domain: \(ns.domain), code: \(ns.code), userInfo: \(ns.userInfo)")
             }
         }
-
     }
     
     //UNREGISTRATION: This section of code unregisters your app with the Meta AI app. --------------------------------------------------------------
