@@ -18,8 +18,8 @@ struct ContentView: View {
         Text("Hello, world!")
             .padding()
         
-        Button("Register") { startRegistration() }
-            .padding()
+        //Button("Register glasses") { startRegistration() }
+        //    .padding()
         
         Button("Get Camera Permission") {requestCameraPermission()}
             .padding()
@@ -30,16 +30,18 @@ struct ContentView: View {
 
     //APP REGISTRATION: This section of code registers your app with the Meta AI app. --------------------------------------------------------------
     func startRegistration() {
-        Task {
-            do{
-                try await wearables.startRegistration()
-              //Opens Meta AI app and has user register the glasses
-              //OUTPUT must be fed to handleUrl -> done by func handleWearablesCallback(url)
+        Task { //Code from Claude
+            do {
+                //Opens Meta AI app and has user register the glasses
+                //OUTPUT must be fed to handleUrl -> done by func handleWearablesCallback(url)
+                try await Wearables.shared.startRegistration()
             } catch {
-                errorMessage = "Registration failed: \(error.localizedDescription)"
+                let ns = error as NSError
+                    print("describing: \(String(describing: error))")
+                    print("localized: \(error.localizedDescription)")
+                    print("domain: \(ns.domain), code: \(ns.code), userInfo: \(ns.userInfo)")
             }
         }
-
     }
     
     //UNREGISTRATION: This section of code unregisters your app with the Meta AI app. --------------------------------------------------------------
@@ -55,17 +57,6 @@ struct ContentView: View {
         }
 
     }
-    
-    //CHECK REGISTRATION STATUS
-    func observeRegistrationStatus() async {
-        for await state in wearables.registrationStateStream() {
-            registrationStatus = state
-            // Check camera permission whenever registration state changes
-            if state == .registered {
-                await checkCameraPermission()
-            }
-        }
-    }
 
     //REQUEST PERMISSION TO USE METAGLASSES CAMERA ---------------------------
     func requestCameraPermission(){
@@ -74,29 +65,16 @@ struct ContentView: View {
                 cameraStatus = try await Wearables.shared.requestPermission(.camera)
                 /*TRY is used to call functions/methods that can potentially throw errors.
                  AWAIT tells the code to suspend/not move on to below lines until the current line returns its result.*/
+                if cameraStatus == .granted {
+                    errorMessage = nil
+                    print("Camera permission granted")
+                } else {
+                    print("Camera permission not granted: \(cameraStatus)")
+                }
             } catch {
                 errorMessage = "Camera permission failed: \(error.localizedDescription)"
             }
         }
     }
-    
-    //CHECK THE CURRENT PERMISSIONS ON CAMERA USE ----------------------------
-    func checkCameraPermission() async {
-        do {
-            //Request permission to use camera in the Meta AI app and change cameraStatus to equal the user's output.
-            cameraStatus = try await wearables.checkPermissionStatus(.camera)
-            if cameraStatus == .granted { errorMessage = nil }
-            print("Permission granted")
-        } catch {
-            let nsError = error as NSError
-                if nsError.domain == "MWDATCore.PermissionError" && nsError.code == 1 {
-                        return  // silently ignore
-                    }
-                    if registrationStatus == .registered {
-                        errorMessage = "Permission check failed: \(error.localizedDescription)"
-            }
-        }
-    }
 }
-
 
