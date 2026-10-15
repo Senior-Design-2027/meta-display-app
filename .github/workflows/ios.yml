@@ -16,18 +16,17 @@ jobs:
       - name: Checkout repository
         uses: actions/checkout@v4
 
-      - name: Select Xcode Version
+      - name: Select Xcode
         run: sudo xcode-select -switch /Applications/Xcode.app
 
       - name: Resolve Swift Package Dependencies
-        run: |
-          xcodebuild -resolvePackageDependencies -scheme "meta-display-app"
+        run: xcodebuild -resolvePackageDependencies -scheme "meta-display-app"
 
       - name: Build and Test on iOS Simulator
-        run: |
-          xcodebuild clean test \
-            -scheme "meta-display-app" \
-            -destination "platform=iOS Simulator,name=iPhone 16 Pro,OS=latest" \
-            CODE_SIGNING_ALLOWED=NO \
-            CODE_SIGNING_REQUIRED=NO \
-            CODE_SIGN_IDENTITY="""$file_to_build" -destination "platform=$platform,name=$device"
+        run: >
+          xcodebuild clean test
+          -scheme "meta-display-app"
+          -destination "generic/platform=iOS Simulator"
+          CODE_SIGNING_ALLOWED=NO
+          CODE_SIGNING_REQUIRED=NO
+          CODE_SIGN_IDENTITY=""
