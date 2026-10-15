@@ -1,0 +1,37 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
+<plist version="1.0">
+<dict>
+	<key>CFBundleURLTypes</key>
+	<array>
+		<dict>
+			<key>CFBundleTypeRole</key>
+			<string>Editor</string>
+			<key>CFBundleURLSchemes</key>
+			<array>
+				<string>glassesregistrationtest</string>
+			</array>
+		</dict>
+	</array>
+	<key>MWDAT</key>
+	<dict>
+		<key>AppLinkURLScheme</key>
+		<string>glassesregistrationtest://</string>
+		<key>ClientToken</key>
+		<string>AR|29055112560844360|4d84a679f9c52ce2b6f62da5f896b2a4</string>
+		<key>MetaAppID</key>
+		<string>29055112560844360</string>
+		<key>TeamID</key>
+		<string>Y4H3HF5Y59</string>
+	</dict>
+	<key>UIBackgroundModes</key>
+	<array>
+		<string>bluetooth-peripheral</string>
+		<string>external-accessory</string>
+	</array>
+	<key>UISupportedExternalAccessoryProtocols</key>
+	<array>
+		<string>com.meta.ar.wearable</string>
+	</array>
+</dict>
+</plist>
