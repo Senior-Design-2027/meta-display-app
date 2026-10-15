@@ -1,0 +1,33 @@
+name: iOS CI
+
+on:
+  push:
+    branches: [ "main" ]
+  pull_request:
+    branches: [ "main" ]
+
+jobs:
+  build:
+    name: Build & Test
+    runs-on: macos-latest
+    timeout-minutes: 20
+
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+
+      - name: Select Xcode Version
+        run: sudo xcode-select -switch /Applications/Xcode.app
+
+      - name: Resolve Swift Package Dependencies
+        run: |
+          xcodebuild -resolvePackageDependencies -scheme "meta-display-app"
+
+      - name: Build and Test on iOS Simulator
+        run: |
+          xcodebuild clean test \
+            -scheme "meta-display-app" \
+            -destination "platform=iOS Simulator,name=iPhone 16 Pro,OS=latest" \
+            CODE_SIGNING_ALLOWED=NO \
+            CODE_SIGNING_REQUIRED=NO \
+            CODE_SIGN_IDENTITY="""$file_to_build" -destination "platform=$platform,name=$device"
