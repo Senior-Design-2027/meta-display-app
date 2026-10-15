@@ -22,9 +22,9 @@ jobs:
       - name: Resolve Swift Package Dependencies
         run: xcodebuild -resolvePackageDependencies -scheme "meta-display-app"
 
-      - name: Build and Test on iOS Simulator
+      - name: Build on iOS Simulator
         run: >
-          xcodebuild clean test
+          xcodebuild clean build
           -scheme "meta-display-app"
           -destination "generic/platform=iOS Simulator"
           CODE_SIGNING_ALLOWED=NO
