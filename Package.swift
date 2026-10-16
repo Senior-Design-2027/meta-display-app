@@ -9,7 +9,7 @@ let package = Package(
     ],
     dependencies: [
         // Meta Wearables DAT iOS Package
-        .package(url: "https://github.com/facebook/meta-wearables-dat-ios", from: "0.2.1")
+        .package(url: "https://github.com/facebook/meta-wearables-dat-ios", from: "1.0.0")
     ],
     targets: [
         .executableTarget(
